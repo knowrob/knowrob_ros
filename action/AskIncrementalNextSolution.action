@@ -1,0 +1,11 @@
+uint32 queryId
+---
+byte FALSE = 0
+byte TRUE = 1
+byte QUERY_FAILED = 2
+byte INVALID_QUERY_ID = 3
+
+GraphAnswerMessage answer
+byte status
+---
+bool finished

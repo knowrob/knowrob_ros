@@ -1,0 +1,10 @@
+version: '3'
+services:  
+  mongo:
+    image: mongo:4.4.3-bionic
+    container_name: mongo_container
+    ports:
+      - 127.0.0.1:27018:27017
+    logging:
+      driver: "none"
+    network_mode: host
