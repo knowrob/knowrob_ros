@@ -19,20 +19,21 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <ros/package.h>
-#include <knowrob/GraphAnswerMessage.h>
-#include <knowrob/GraphQueryMessage.h>
-#include <knowrob/KeyValuePair.h>
-#include <knowrob/AskAllAction.h>
-#include <knowrob/AskOneAction.h>
-#include <knowrob/AskIncrementalAction.h>
-#include <knowrob/AskIncrementalNextSolutionAction.h>
-#include <knowrob/AskIncrementalFinish.h>
-#include <knowrob/TellAction.h>
+#include <knowrob_ros/GraphAnswerMessage.h>
+#include <knowrob_ros/GraphQueryMessage.h>
+#include <knowrob_ros/KeyValuePair.h>
+#include <knowrob_ros/AskAllAction.h>
+#include <knowrob_ros/AskOneAction.h>
+#include <knowrob_ros/AskIncrementalAction.h>
+#include <knowrob_ros/AskIncrementalNextSolutionAction.h>
+#include <knowrob_ros/AskIncrementalFinish.h>
+#include <knowrob_ros/TellAction.h>
 #include <actionlib/server/simple_action_server.h>
 // std
 #include <mutex>
 
 namespace knowrob {
+	using namespace knowrob_ros;
 	class ROSInterface {
 	private:
 		ros::NodeHandle nh_;

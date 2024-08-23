@@ -6,7 +6,7 @@
  * https://github.com/knowrob/knowrob for license details.
  */
 
-#include "knowrob/integration/ros1/ROSInterface.h"
+#include "ROSInterface.h"
 // KnowRob
 #include "knowrob/knowrob.h"
 #include "knowrob/Logger.h"
@@ -20,15 +20,16 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <ros/package.h>
-#include <knowrob/GraphAnswerMessage.h>
-#include <knowrob/GraphQueryMessage.h>
-#include <knowrob/KeyValuePair.h>
-#include <knowrob/AskAllAction.h>
+#include <knowrob_ros/GraphAnswerMessage.h>
+#include <knowrob_ros/GraphQueryMessage.h>
+#include <knowrob_ros/KeyValuePair.h>
+#include <knowrob_ros/AskAllAction.h>
 #include "knowrob/integration/InterfaceUtils.h"
 #include <boost/property_tree/json_parser.hpp>
 #include <utility>
 
 using namespace knowrob;
+using namespace knowrob_ros;
 
 ROSInterface::ROSInterface(const boost::property_tree::ptree &config)
 		: askall_action_server_(nh_, "knowrob/askall", boost::bind(&ROSInterface::executeAskAllCB, this, _1), false),

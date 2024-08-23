@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --progress=plain -t knowrob/ros1 .
+docker build -t knowrob/ros1 .

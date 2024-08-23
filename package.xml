@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>knowrob</name>
+  <name>knowrob_ros</name>
   <version>2.0.0</version>
   <description>KnowRob is a knowledge processing framework for robots. It has originally
     been developed in the IAS group at Technische Universitaet Muenchen,
@@ -31,9 +31,6 @@
 
   <depend>roslib</depend>
   <depend>roscpp</depend>
-  <depend>swi-prolog</depend>
-  <depend>urdf</depend>
-  <depend>eigen</depend>
-  <depend>libmongoc-dev</depend>
+  <depend>knowrob</depend>
 
 </package>

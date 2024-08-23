@@ -54,7 +54,10 @@ WORKDIR /home/ros/src
 #RUN /opt/ros/noetic/bin/catkin_init_workspace -DPYTHON_EXECUTABLE=/usr/bin/python3
 RUN /usr/bin/catkin init
 
+# Clone the knowrob repository
 RUN git clone https://github.com/knowrob/knowrob.git --branch ros
+# Add the knowrob-ros1 repository
+ADD . /home/ros/src/knowrob_ros
 
 WORKDIR /home/ros
 # Build the catkin workspace
