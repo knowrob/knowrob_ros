@@ -1,5 +1,5 @@
 <launch>
-  <arg name="knowrob_settings" default="$(find knowrob)/settings/default.json" />
+  <arg name="knowrob_settings" default="$(find knowrob)/settings/mongolog.json" />
 
   <env name="KNOWROB_SETTINGS" value="$(arg knowrob_settings)" />
   
