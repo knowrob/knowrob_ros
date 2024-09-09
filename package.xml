@@ -32,5 +32,7 @@
   <depend>roslib</depend>
   <depend>roscpp</depend>
   <depend>knowrob</depend>
-
+  <depend>spdlog</depend>
+  <depend>libmongoc-dev</depend>
+  <depend>fmt</depend>
 </package>

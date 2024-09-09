@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-set(CMAKE_CXX_FLAGS "-Wswitch -std=c++0x -pthread ${CMAKE_CXX_FLAGS} -Wno-undef")
+set(CMAKE_CXX_FLAGS "-Wswitch -std=c++0x -pthread ${CMAKE_CXX_FLAGS} -Wno-undef -lspdlog")
 set(CMAKE_CXX_STANDARD 17)
 
 project(knowrob_ros
@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
     actionlib_msgs
     knowrob
 )
+find_package(spdlog REQUIRED)
 
 add_message_files(
     DIRECTORY msg
@@ -56,5 +57,6 @@ add_executable(knowrob-ros
 )
 add_dependencies(knowrob-ros ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(knowrob-ros ${catkin_LIBRARIES})
+target_link_libraries(knowrob-ros ${catkin_LIBRARIES} spdlog::spdlog)
+
 install(TARGETS knowrob-ros RUNTIME DESTINATION bin)
