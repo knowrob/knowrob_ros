@@ -3,5 +3,5 @@
 
   <env name="KNOWROB_SETTINGS" value="$(arg knowrob_settings)" />
   
-  <node name="knowrob_ros" pkg="knowrob-ros" type="knowrob-ros" cwd="node" output="screen" />
+  <node name="knowrob_ros" pkg="knowrob_ros" type="knowrob-ros" cwd="node" output="screen" />
 </launch>
