@@ -2,9 +2,9 @@ name: Test Docker Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ ros1 ]
   pull_request:
-    branches: [ main ]
+    branches: [ ros1 ]
 
 jobs:
   build:
