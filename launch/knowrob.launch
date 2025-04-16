@@ -1,7 +1,7 @@
 <launch>
-  <arg name="knowrob_settings" default="$(find knowrob)/settings/mongolog.json" />
+  <arg name="knowrob_settings" default="$(find knowrob)/test/settings/kb-test.json.json" />
 
   <env name="KNOWROB_SETTINGS" value="$(arg knowrob_settings)" />
   
-  <node name="knowrob_ros" pkg="knowrob" type="knowrob-ros" cwd="node" output="screen" />
+  <node name="knowrob_ros" pkg="knowrob-ros" type="knowrob-ros" cwd="node" output="screen" />
 </launch>

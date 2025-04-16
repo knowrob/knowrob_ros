@@ -47,7 +47,7 @@ docker build -t knowrob_ros .
 ### 2. Run the Container
 
 ```bash
-docker run -it 
+docker run -it --entrypoint bash knowrob_ros
 ```
 
 ### 3. Launch KnowRob in Docker
@@ -55,6 +55,6 @@ docker run -it
 Once inside the container:
 
 ```bash
-source /root/catkin_ws/devel/setup.bash
+source /catkin_ws/devel/setup.bash
 roslaunch knowrob_ros knowrob.launch
 ```
