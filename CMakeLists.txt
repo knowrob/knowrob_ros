@@ -24,6 +24,9 @@ add_message_files(
     DIRECTORY msg
     FILES
     KeyValuePair.msg
+    ModalFrame.msg
+    Triple.msg
+    TellMessage.msg
     GraphQueryMessage.msg
     GraphAnswerMessage.msg
     EventToken.msg

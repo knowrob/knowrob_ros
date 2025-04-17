@@ -15,6 +15,7 @@
 #include "knowrob/KnowledgeBase.h"
 #include "knowrob/queries/QueryParser.h"
 #include "knowrob/formulas/ModalFormula.h"
+#include "knowrob/terms/String.h"
 // ROS
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -28,7 +29,9 @@
 #include <knowrob_ros/AskIncrementalNextSolutionAction.h>
 #include <knowrob_ros/AskIncrementalFinish.h>
 #include <knowrob_ros/TellAction.h>
+#include <knowrob_ros/ModalFrame.h>
 #include <actionlib/server/simple_action_server.h>
+
 // std
 #include <mutex>
 
@@ -114,7 +117,7 @@ namespace knowrob {
 		 * @param query A GraphQueryMessage
 		 * @return Map of key-value pairs
 		 */
-		std::unordered_map<std::string, boost::any> translateGraphQueryMessage(const GraphQueryMessage &query);
+		std::unordered_map<std::string, boost::any> translateModalityFrameMessage(const ModalFrame &frame);
 
 		/**
 		 * Translate a answer into a GraphAnswerMessage

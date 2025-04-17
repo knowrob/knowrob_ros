@@ -23,15 +23,17 @@ RUN apt install -y ros-noetic-tf2-geometry-msgs
 RUN mkdir /catkin_ws
 RUN mkdir /catkin_ws/src
 
+# Build workspace with knowrob
 WORKDIR /catkin_ws/src
-# Clone the knowrob repository
 RUN git clone https://github.com/knowrob/knowrob.git
-# Add the knowrob-ros1 repository
-ADD . /catkin_ws/src/knowrob_ros
-
 WORKDIR /catkin_ws
-# Build the catkin workspace
 RUN /usr/bin/catkin init
+RUN . /opt/ros/noetic/setup.sh && /usr/bin/catkin build
+
+# Build workspace with knowrob_ros
+WORKDIR /catkin_ws/src
+ADD . /catkin_ws/src/knowrob_ros
+WORKDIR /catkin_ws
 RUN . /opt/ros/noetic/setup.sh && /usr/bin/catkin build
 
 COPY run_knowrob.sh /run_knowrob.sh
