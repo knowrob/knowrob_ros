@@ -1,5 +1,5 @@
 <launch>
-  <arg name="knowrob_settings" default="$(find knowrob)/test/settings/lpn.json" />
+  <arg name="knowrob_settings" default="$(find knowrob)/tests/settings/lpn.json" />
 
   <env name="KNOWROB_SETTINGS" value="$(arg knowrob_settings)" />
   

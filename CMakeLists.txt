@@ -47,7 +47,7 @@ generate_messages(DEPENDENCIES
     actionlib_msgs
 )
 
-catkin_package(CATKIN_DEPENDS roscpp roslib knowrob)
+catkin_package(CATKIN_DEPENDS roscpp roslib knowrob message_runtime)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -55,7 +55,10 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(knowrob-ros
     src/ROSInterface.cpp
 )
-add_dependencies(knowrob-ros ${catkin_EXPORTED_TARGETS})
+add_dependencies(knowrob-ros 
+    ${catkin_EXPORTED_TARGETS}
+    knowrob_ros_generate_messages_cpp
+)
 
 target_link_libraries(knowrob-ros ${catkin_LIBRARIES} spdlog::spdlog)
 
