@@ -54,15 +54,15 @@ ROSInterface::ROSInterface(const boost::property_tree::ptree &config)
 ROSInterface::~ROSInterface() = default;
 
 // Function to convert GraphQueryMessage to std::unordered_map
-std::unordered_map<std::string, boost::any> ROSInterface::translateGraphQueryMessage(const GraphQueryMessage &query) {
+std::unordered_map<std::string, boost::any> ROSInterface::translateModalityFrameMessage(const ModalFrame &frame) {
 	std::unordered_map<std::string, boost::any> options;
 
-	options["epistemicOperator"] = int(query.epistemicOperator);
-	options["aboutAgentIRI"] = query.aboutAgentIRI;
-	options["confidence"] = query.confidence;
-	options["temporalOperator"] = int(query.temporalOperator);
-	options["minPastTimestamp"] = query.minPastTimestamp;
-	options["maxPastTimestamp"] = query.maxPastTimestamp;
+	options["epistemicOperator"] = int(frame.epistemicOperator);
+	options["aboutAgentIRI"] = frame.aboutAgentIRI;
+	options["confidence"] = frame.confidence;
+	options["temporalOperator"] = int(frame.temporalOperator);
+	options["minPastTimestamp"] = frame.minPastTimestamp;
+	options["maxPastTimestamp"] = frame.maxPastTimestamp;
 
 	return options;
 }
@@ -130,10 +130,9 @@ GraphAnswerMessage ROSInterface::createGraphAnswer(std::shared_ptr<const AnswerY
 
 void ROSInterface::executeAskAllCB(const AskAllGoalConstPtr &goal) {
 
-	// Implement your action here
 	FormulaPtr phi(QueryParser::parse(goal->query.queryString));
 
-	FormulaPtr mPhi = InterfaceUtils::applyModality(translateGraphQueryMessage(goal->query), phi);
+	FormulaPtr mPhi = InterfaceUtils::applyModality(translateModalityFrameMessage(goal->query.frame), phi);
 
 	auto ctx = std::make_shared<QueryContext>(QUERY_FLAG_ALL_SOLUTIONS);
 	auto resultStream = kb_->submitQuery(mPhi, ctx);
@@ -178,10 +177,9 @@ void ROSInterface::executeAskAllCB(const AskAllGoalConstPtr &goal) {
 void ROSInterface::executeAskIncrementalCB(const AskIncrementalGoalConstPtr &goal) {
 	std::lock_guard<std::mutex> lock(query_mutex_);
 
-	// Implement your action here
 	FormulaPtr phi(QueryParser::parse(goal->query.queryString));
 
-	FormulaPtr mPhi = InterfaceUtils::applyModality(translateGraphQueryMessage(goal->query), phi);
+	FormulaPtr mPhi = InterfaceUtils::applyModality(translateModalityFrameMessage(goal->query.frame), phi);
 
 	auto ctx = std::make_shared<QueryContext>(QUERY_FLAG_ALL_SOLUTIONS);
 	auto resultStream = kb_->submitQuery(mPhi, ctx);
@@ -275,9 +273,10 @@ bool ROSInterface::handleAskIncrementalFinish(AskIncrementalFinish::Request &req
 }
 
 void ROSInterface::executeAskOneCB(const AskOneGoalConstPtr &goal) {
+
 	FormulaPtr phi(QueryParser::parse(goal->query.queryString));
 
-	FormulaPtr mPhi = InterfaceUtils::applyModality(translateGraphQueryMessage(goal->query), phi);
+	FormulaPtr mPhi = InterfaceUtils::applyModality(translateModalityFrameMessage(goal->query.frame), phi);
 
 	auto ctx = std::make_shared<QueryContext>(QUERY_FLAG_ALL_SOLUTIONS);
 	auto resultStream = kb_->submitQuery(mPhi, ctx);
@@ -307,9 +306,24 @@ void ROSInterface::executeAskOneCB(const AskOneGoalConstPtr &goal) {
 }
 
 void ROSInterface::executeTellCB(const TellGoalConstPtr &goal) {
-	FormulaPtr phi(QueryParser::parse(goal->query.queryString));
 
-	FormulaPtr mPhi = InterfaceUtils::applyModality(translateGraphQueryMessage(goal->query), phi);
+	// Create a vector of Formulas
+	std::vector<FormulaPtr> formulas;
+	// For each triple
+	for (const auto &triple: goal->tell.triples) {
+		// Create a vector of Terms for subject and object
+		std::vector<TermPtr> terms;
+		// Add subject
+		terms.push_back(std::make_shared<String>(triple.subject.data()));
+		// Add object
+		terms.push_back(std::make_shared<String>(triple.object.data()));
+		// Add to formulas
+		formulas.push_back(std::make_shared<Predicate>(triple.predicate, terms));
+	}
+	// Create conjunction of all formulas
+	FormulaPtr phi = std::make_shared<Conjunction>(formulas);
+	
+	FormulaPtr mPhi = InterfaceUtils::applyModality(translateModalityFrameMessage(goal->tell.frame), phi);
 
 	bool success = InterfaceUtils::assertStatements(kb_, {mPhi});
 

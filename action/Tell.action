@@ -1,4 +1,4 @@
-GraphQueryMessage query
+TellMessage tell
 ---
 byte TRUE = 0
 byte TELL_FAILED = 1
