@@ -1,4 +1,4 @@
 #!/bin/bash
 
-source /home/ros/devel/setup.bash
-roslaunch /home/ros/src/knowrob/launch/knowrob.launch
+source /catkin_ws/devel/setup.bash
+roslaunch knowrob_ros knowrob.launch

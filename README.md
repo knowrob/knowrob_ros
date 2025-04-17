@@ -41,13 +41,13 @@ If you'd like to avoid setting up everything locally, you can use the provided D
 From the root of the repository:
 
 ```bash
-docker build -t knowrob_ros .
+docker build -t knowrob/ros1 .
 ```
 
 ### 2. Run the Container
 
 ```bash
-docker run -it --entrypoint bash knowrob_ros
+docker run -it --entrypoint bash knowrob/ros1
 ```
 
 ### 3. Launch KnowRob in Docker
