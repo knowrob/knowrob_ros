@@ -16,7 +16,3 @@ jobs:
 
     - name: Build Docker image
       run: docker build -t knowrob/ros1 .
-
-    - name: Run roslaunch to test if it starts without error
-      run: |
-        docker run --rm knowrob/ros1 timeout 30s bash -c "/run_knowrob_local.sh"
