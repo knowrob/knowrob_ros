@@ -1,25 +1,38 @@
-import knowrob_ros.knowrob_ros_lib
+from knowrob_ros.knowrob_ros_lib import KnowRobRosLib, graph_answer_to_dict, get_default_modalframe, graph_answers_to_list
 import unittest
-from knowrob_ros import AskOneAction, AskOneGoal  # Replace with actual import paths
-
-
+import rosunit
+from knowrob_ros.msg import (
+    KeyValuePair,
+    AskOneAction,
+    AskOneGoal,
+    AskOneResult,
+    AskAllAction,
+    AskAllGoal,
+    AskAllResult,
+    GraphQueryMessage,
+    GraphAnswerMessage,
+)
 
 class TestKnowrobRosLib(unittest.TestCase):
-    # def test_ask_all(self):
-    #     # Test the ask_all function
-    #     result = knowrob_ros.ask_all("lpn:jelous(vincent, X)")
-    #     self.assertEqual(result.bindings, [{
-    #         'X': 'hans'
-    #     }])
+    def test_ask_all(self):
+        # Test the ask_one function
+        ask_all_result = self.knowrob_ros.ask_all("lpn:jealous(lpn:vincent, X)", get_default_modalframe())
+        self.assertTrue(ask_all_result.status == AskAllResult.TRUE)
+        result_dict = graph_answers_to_list(ask_all_result.answers)
+        print("Result dict:", str(result_dict))
+        self.assertEqual(result_dict, [{
+            'X': 'http://knowrob.org/kb/lpn#marsellus'
+        }])
 
     def test_ask_one(self):
         # Test the ask_one function
-        ask_one_result = knowrob_ros.ask_one("lpn:jealous(lpn:vincent, X)")
-        self.assertTrue(ask_one_result.status == AskOneGoal.TRUE)
-        result = knowrob_ros_lib.graph_answer_to_dicts(ask_one_result.answer)
-        self.assertEqual(result.bindings, [{
-            'X': 'lpn:marsellus'
-        }])
+        ask_one_result = self.knowrob_ros.ask_one("lpn:jealous(lpn:vincent, X)", get_default_modalframe())
+        self.assertTrue(ask_one_result.status == AskOneResult.TRUE)
+        result_dict = graph_answer_to_dict(ask_one_result.answer)
+        print("Result dict:", str(result_dict))
+        self.assertEqual(result_dict, {
+            'X': 'http://knowrob.org/kb/lpn#marsellus'
+        })
 
     # def test_tell(self):
     #     # Create the triples to be added
@@ -37,15 +50,27 @@ class TestKnowrobRosLib(unittest.TestCase):
     #     }])
 
     # Init the test class
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         # Initialize the knowrob_ros_lib
-        self.knowrob_ros = knowrob_ros_lib.KnowRobRosLib()
+        cls.knowrob_ros = KnowRobRosLib()
         # Initialize the ROS node
-        self.knowrob_ros.init_node("test_knowrob_ros_lib")
+        cls.knowrob_ros.init_node("test_knowrob_ros_lib")
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         # Shutdown the ROS node
-        self.knowrob_ros.shutdown_node()
+        cls.knowrob_ros.shutdown_node()
+        
+@classmethod
+def setUpClass(cls):
+    cls.knowrob_ros = KnowRobRosLib()
+    cls.knowrob_ros.init_node("test_knowrob_ros_lib")
+
 
 if __name__ == '__main__':
-    unittest.main()
+    rosunit.unitrun(
+        'knowrob_ros',           # your package
+        'test_knowrob_ros_lib',  # test name
+        TestKnowrobRosLib        # your TestCase
+    )

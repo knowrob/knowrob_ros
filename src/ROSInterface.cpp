@@ -155,7 +155,7 @@ void ROSInterface::executeAskAllCB(const AskAllGoalConstPtr &goal) {
 				} else {
 					// Push one answer
 					GraphAnswerMessage graphAns = createGraphAnswer(positiveAnswer);
-					result.answer.push_back(graphAns);
+					result.answers.push_back(graphAns);
 					numSolutions_ += 1;
 					// publish feedback
 					AskAllFeedback feedback;

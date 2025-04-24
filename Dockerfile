@@ -30,6 +30,7 @@ WORKDIR /catkin_ws
 RUN /usr/bin/catkin init
 RUN . /opt/ros/noetic/setup.sh && /usr/bin/catkin build
 
+RUN echo "aaaa"
 # Build workspace with knowrob_ros
 WORKDIR /catkin_ws/src
 ADD . /catkin_ws/src/knowrob_ros

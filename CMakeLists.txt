@@ -82,6 +82,11 @@ file (COPY
     DESTINATION ${CATKIN_DEVEL_PREFIX}/lib/python3/dist-packages/knowrob_ros/
 )
 
+catkin_install_python(PROGRAMS
+  scripts/test_knowrob_ros_lib.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 ## =============================
 ## Install binaries
 ## =============================

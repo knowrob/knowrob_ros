@@ -4,7 +4,7 @@ byte FALSE = 0
 byte TRUE = 1
 byte QUERY_FAILED = 2
 
-GraphAnswerMessage[] answer
+GraphAnswerMessage[] answers
 byte status
 ---
 uint32 numberOfSolutions
