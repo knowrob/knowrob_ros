@@ -19,7 +19,16 @@ find_package(catkin REQUIRED COMPONENTS
     knowrob
 )
 find_package(spdlog REQUIRED)
+find_package(rostest REQUIRED)
 
+## ==============================
+## Python setup
+## ==============================
+catkin_python_setup()
+
+## =============================
+## ROS message generation
+## =============================
 add_message_files(
     DIRECTORY msg
     FILES
@@ -29,7 +38,6 @@ add_message_files(
     TellMessage.msg
     GraphQueryMessage.msg
     GraphAnswerMessage.msg
-    EventToken.msg
 )
 add_action_files(
     DIRECTORY action
@@ -50,7 +58,10 @@ generate_messages(DEPENDENCIES
     actionlib_msgs
 )
 
-catkin_package(CATKIN_DEPENDS roscpp roslib knowrob message_runtime)
+## =============================
+## Catkin package
+## =============================
+catkin_package(CATKIN_DEPENDS roscpp roslib rospy knowrob message_runtime)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
@@ -65,4 +76,36 @@ add_dependencies(knowrob-ros
 
 target_link_libraries(knowrob-ros ${catkin_LIBRARIES} spdlog::spdlog)
 
+## =============================
+## Python library installation
+## =============================
+
+# Install Python library (e.g., knowrob_ros_lib.py)
+# With this:
+install(FILES
+  src/knowrob_ros_lib.py
+  DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+)
+
+# Install Python scripts (e.g., test_knowrob_ros_lib.py)
+catkin_install_python(PROGRAMS
+  scripts/test_knowrob_ros_lib.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## =============================
+## Install binaries
+## =============================
+
 install(TARGETS knowrob-ros RUNTIME DESTINATION bin)
+
+## =============================
+## Install test files
+## =============================
+
+if (CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(
+    test/test_knowrob_ros_lib.test
+    DEPENDENCIES ${catkin_EXPORTED_TARGETS}
+  )
+endif()
