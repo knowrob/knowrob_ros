@@ -74,18 +74,23 @@ Then run a query on another terminal:
 ```bash
 rostopic pub /knowrob/askone/goal knowrob_ros/AskOneActionGoal "header:
   seq: 0
-  stamp:
-    secs: 0
-    nsecs: 0
+  stamp: {secs: 0, nsecs: 0}
   frame_id: ''
 goal_id:
-  stamp:
-    secs: 0
-    nsecs: 0
+  stamp: {secs: 0, nsecs: 0}
   id: ''
 goal:
-  query: {lang: '', queryString: 'lpn:jealous(lpn:vincent, X)', epistemicOperator: 0, aboutAgentIRI: '', aboutSimulationIRI: '',
-    temporalOperator: 0, minPastTimestamp: 0.0, maxPastTimestamp: 0.0, confidence: 0.0}" 
+  query:
+    lang: ''
+    queryString: 'lpn:jealous(lpn:vincent, X)'
+    frame:
+      epistemicOperator: 0                                                                                                          
+      aboutAgentIRI: ''
+      aboutSimulationIRI: ''                                                             
+      temporalOperator: 0
+      minPastTimestamp: 0.0
+      maxPastTimestamp: 0.0
+      confidence: 0.0"
 ```
 
 You should now see an answer on the first terminal.

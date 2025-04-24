@@ -1,0 +1,10 @@
+<launch>
+  <!-- Include the main KnowRob backend -->
+  <include file="$(find knowrob_ros)/launch/knowrob.launch" />
+
+  <!-- Delay (optional, for stability) -->
+  <param name="/use_sim_time" value="false"/>
+
+  <!-- Run the unit test via rostest (note type is still the .py file) -->
+  <test test-name="test_knowrob_ros_lib" pkg="knowrob_ros" type="test_knowrob_ros_lib.py" time-limit="30" />
+</launch>

@@ -1,5 +1,5 @@
 # Languages in which graph queries can be encoded.
-uint8 LANG_FOL=0 # Prolog-like syntax, @see ....
+string LANG_FOL="LANG_FOL" # Prolog-like syntax, @see ....
 
 # Configure the language in which the graph query is encoded.
 string lang # Default: LANG_FOL

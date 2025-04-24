@@ -28,11 +28,14 @@
   <build_depend>visualization_msgs</build_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>actionlib</exec_depend>
+  <test_depend>rostest</test_depend>
+  <test_depend>python3</test_depend>
 
   <depend>roslib</depend>
   <depend>roscpp</depend>
   <depend>knowrob</depend>
   <depend>spdlog</depend>
+  <depend>rospy</depend>
   <depend>libmongoc-dev</depend>
   <depend>fmt</depend>
 </package>
