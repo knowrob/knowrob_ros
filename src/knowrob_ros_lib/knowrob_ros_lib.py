@@ -1,8 +1,12 @@
 import rospy
-from std_msgs.msg import Bool
-from knowrob_ros.msg import GraphQueryMessage, GraphAnswerMessage, KeyValuePair, ModalFrame  # Replace with actual import paths
-from knowrob_ros.action import AskOneAction, AskOneGoal  # Replace with actual import paths
 import actionlib
+from knowrob_askone.msg import (
+    KeyValuePair,
+    AskOneAction,
+    AskOneGoal,
+    GraphQueryMessage,
+    GraphAnswerMessage,
+)
 
 
 class KnowRobRosLib:

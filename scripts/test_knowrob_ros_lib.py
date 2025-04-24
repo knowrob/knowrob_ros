@@ -1,6 +1,6 @@
-import knowrob_ros_lib
+import knowrob_ros.knowrob_ros_lib
 import unittest
-from knowrob_ros.action import AskOneAction, AskOneGoal  # Replace with actual import paths
+from knowrob_ros import AskOneAction, AskOneGoal  # Replace with actual import paths
 
 
 
