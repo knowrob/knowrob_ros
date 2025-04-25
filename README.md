@@ -184,7 +184,7 @@ The `ModalFrame` message controls **who** “knows” what, and **when** it’s 
 3. Follow ROS and Python style guidelines  
 4. Submit a pull request  
 
-## 🛠 Support
+## Support
 
 - **Issues & feature requests**: [GitHub Issues](https://github.com/your-org/knowrob_ros/issues)  
 
