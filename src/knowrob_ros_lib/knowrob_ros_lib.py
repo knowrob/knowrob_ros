@@ -8,9 +8,13 @@ from knowrob_ros.msg import (
     AskAllAction,
     AskAllGoal,
     AskAllResult,
+    TellAction,
+    TellGoal,
+    TellResult,
     GraphQueryMessage,
     GraphAnswerMessage,
-    ModalFrame
+    ModalFrame,
+    Triple
 )
 
 
@@ -24,6 +28,8 @@ class KnowRobRosLib:
         self._ask_one_client.wait_for_server()
         self._ask_all_client = actionlib.SimpleActionClient("knowrob/askall", AskAllAction)
         self._ask_all_client.wait_for_server()
+        self._tell_client = actionlib.SimpleActionClient("knowrob/tell", TellAction)
+        self._tell_client.wait_for_server()
 
     def shutdown_node(self):
         rospy.signal_shutdown("KnowRob node shutdown")
@@ -50,11 +56,14 @@ class KnowRobRosLib:
         result = self._ask_all_client.get_result()
         return result
 
-    # def tell(self, triples_str):
-    #     request = TellRequest()
-    #     request.query.query_string = triples_str
-    #     response = self._tell_service(request)
-    #     return TellResultAdapter(response)
+    def tell(self, list_of_triples, modal_frame):
+        request = TellGoal()
+        request.tell.triples = list_of_triples
+        request.tell.frame = modal_frame
+        self._tell_client.send_goal(request)
+        self._tell_client.wait_for_result()
+        result = self._tell_client.get_result()
+        return result
 
     # def ask_all(self, query):
     #     # This is a stub assuming synchronous call, you'd use ROS service or action here too
@@ -131,13 +140,16 @@ class TripleQueryBuilder:
         self.triples = []
 
     def add(self, subject, predicate, obj):
-        """Add a triple to the list."""
-        self.triples.append((subject, predicate, obj))
+        """Add a Triple message to the list."""
+        triple = Triple()
+        triple.subject = subject
+        triple.predicate = predicate
+        triple.object = obj
+        self.triples.append(triple)
 
-    def build_query_string(self):
-        """Generate a Prolog-style query string."""
-        return ', '.join(f'{pred}({subj},{obj})' for subj, pred, obj in self.triples)
-
+    def get_triples(self):
+        """Return the list of Triple messages."""
+        return self.triples
 
 # Module-level functions
 _knowrob_instance = KnowRobRosLib()

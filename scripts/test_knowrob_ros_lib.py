@@ -1,4 +1,4 @@
-from knowrob_ros.knowrob_ros_lib import KnowRobRosLib, graph_answer_to_dict, get_default_modalframe, graph_answers_to_list
+from knowrob_ros.knowrob_ros_lib import KnowRobRosLib, TripleQueryBuilder, graph_answer_to_dict, get_default_modalframe, graph_answers_to_list
 import unittest
 import rosunit
 from knowrob_ros.msg import (
@@ -9,6 +9,9 @@ from knowrob_ros.msg import (
     AskAllAction,
     AskAllGoal,
     AskAllResult,
+    TellAction,
+    TellGoal,
+    TellResult,
     GraphQueryMessage,
     GraphAnswerMessage,
 )
@@ -19,7 +22,6 @@ class TestKnowrobRosLib(unittest.TestCase):
         ask_all_result = self.knowrob_ros.ask_all("lpn:jealous(lpn:vincent, X)", get_default_modalframe())
         self.assertTrue(ask_all_result.status == AskAllResult.TRUE)
         result_dict = graph_answers_to_list(ask_all_result.answers)
-        print("Result dict:", str(result_dict))
         self.assertEqual(result_dict, [{
             'X': 'http://knowrob.org/kb/lpn#marsellus'
         }])
@@ -29,25 +31,24 @@ class TestKnowrobRosLib(unittest.TestCase):
         ask_one_result = self.knowrob_ros.ask_one("lpn:jealous(lpn:vincent, X)", get_default_modalframe())
         self.assertTrue(ask_one_result.status == AskOneResult.TRUE)
         result_dict = graph_answer_to_dict(ask_one_result.answer)
-        print("Result dict:", str(result_dict))
         self.assertEqual(result_dict, {
             'X': 'http://knowrob.org/kb/lpn#marsellus'
         })
 
-    # def test_tell(self):
-    #     # Create the triples to be added
-    #     builder = knowrob_ros_lib.TripleQueryBuilder()
-    #     builder.add("alice", "knows", "bob")
-    #     builder.add("bob", "likes", "pizza")
-    #     query_str = builder.build_query_string()
+    def test_tell(self):
+        # Create the triples to be added
+        builder = TripleQueryBuilder()
+        builder.add("alice", "marriedTo", "frank")
+        triples = builder.get_triples()
 
-    #     # Test the tell function
-    #     result = knowrob_ros.tell(query_str)
-    #     self.assertTrue(result.success)
-    #     result = knowrob_ros.ask_all("lpn:jelous(alice, X)")
-    #     self.assertEqual(result.bindings, [{
-    #         'X': 'pizza'
-    #     }])
+        # Test the tell function
+        ask_tell_result = self.knowrob_ros.tell(triples, get_default_modalframe())
+        self.assertTrue(ask_tell_result.status == TellResult.TRUE)
+        ask_all_result = self.knowrob_ros.ask_all("marriedTo(alice, X)", get_default_modalframe())
+        result_dict = graph_answers_to_list(ask_all_result.answers)
+        self.assertEqual(result_dict, [{
+            'X': 'frank'
+        }])
 
     # Init the test class
     @classmethod
