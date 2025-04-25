@@ -2,7 +2,7 @@
 
 **knowrob_ros** is a ROS 1 wrapper for [KnowRob](https://github.com/knowrob/knowrob), providing ROS interfaces to integrate KnowRob's knowledge reasoning capabilities with robotic systems. 
 
-## 🚀 Key Features
+## Key Features
 
 - **ROS Actions**  
   - `AskOne`, `AskAll`, **AskIncremental**, and `Tell`  
@@ -30,7 +30,7 @@ cd ~/catkin_ws/src
 git clone https://github.com/knowrob/knowrob.git
 
 # Clone knowrob_ros (this repo)
-git clone https://github.com/your-org/knowrob_ros.git
+git clone https://github.com/knowrob/knowrob_ros.git
 ```
 
 ### 2. Build the workspace
