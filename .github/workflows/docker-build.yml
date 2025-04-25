@@ -20,12 +20,12 @@ jobs:
       - name: Run ROS unit tests
         run: |
           docker run --rm \
+            --entrypoint "" \
             -v "${{ github.workspace }}:/catkin_ws/src/knowrob_ros:ro" \
             -w /catkin_ws \
             knowrob/ros1 bash -lc "\
               source /opt/ros/noetic/setup.bash && \
-              # build just your package (faster) and its deps
-              catkin_make --only-pkg-with-deps knowrob_ros && \
+              catkin build knowrob_ros && \
               source devel/setup.bash && \
               rostest knowrob_ros test_knowrob_ros_lib.test \
             "
