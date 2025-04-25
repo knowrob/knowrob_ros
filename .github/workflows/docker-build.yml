@@ -9,10 +9,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: docker build -t knowrob/ros1 .
+      - name: Build Docker image
+        run: |
+          docker build -t knowrob/ros1 .
+
+      - name: Run ROS unit tests
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/catkin_ws/src/knowrob_ros:ro" \
+            -w /catkin_ws \
+            knowrob/ros1 bash -lc "\
+              source /opt/ros/noetic/setup.bash && \
+              # build just your package (faster) and its deps
+              catkin_make --only-pkg-with-deps knowrob_ros && \
+              source devel/setup.bash && \
+              rostest knowrob_ros test_knowrob_ros_lib.test \
+            "
