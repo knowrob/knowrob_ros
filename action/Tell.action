@@ -1,7 +1,7 @@
 TellMessage tell
 ---
-byte TRUE = 0
-byte TELL_FAILED = 1
+byte TELL_FAILED = 0
+byte TRUE = 1
 
 byte status
 ---
