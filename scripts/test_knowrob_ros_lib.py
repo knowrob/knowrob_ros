@@ -3,11 +3,12 @@
 """
 test_knowrob_ros_lib.py
 
-Unit tests for KnowRobRosLib, now including incremental-query support.
+Unit tests for KnowRobRosLib, including AskOne, AskAll, Incremental, and Tell.
 """
 
 import unittest
 import rosunit
+import rospy
 
 from knowrob_ros.knowrob_ros_lib import (
     KnowRobRosLib,
@@ -33,17 +34,18 @@ class TestKnowrobRosLib(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """
-        Initialize KnowRobRosLib and ROS node once for all tests.
+        Initialize ROS node and KnowRobRosLib once for all tests.
         """
+        rospy.init_node("test_knowrob_ros_lib", anonymous=True)
         cls.knowrob_ros = KnowRobRosLib()
-        cls.knowrob_ros.init_node("test_knowrob_ros_lib")
+        cls.knowrob_ros.init_clients()
 
     @classmethod
     def tearDownClass(cls):
         """
-        Shutdown ROS node after all tests.
+        Shutdown KnowRobRosLib after all tests.
         """
-        cls.knowrob_ros.shutdown_node()
+        cls.knowrob_ros.shutdown()
 
     def test_ask_all(self):
         """AskAll should return all matches for a query."""
@@ -111,13 +113,6 @@ class TestKnowrobRosLib(unittest.TestCase):
         # Finish incremental query
         finished = self.knowrob_ros.finish_incremental(query_id)
         self.assertTrue(finished)
-
-
-# Note: stray free-standing setUpClass below is a duplicate and has no effect on tests.
-@classmethod
-def setUpClass(cls):
-    cls.knowrob_ros = KnowRobRosLib()
-    cls.knowrob_ros.init_node("test_knowrob_ros_lib")
 
 
 if __name__ == '__main__':
