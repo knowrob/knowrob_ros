@@ -21,6 +21,8 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(spdlog REQUIRED)
 find_package(rostest REQUIRED)
 
+catkin_python_setup()
+
 ## =============================
 ## ROS message generation
 ## =============================
@@ -75,16 +77,11 @@ target_link_libraries(knowrob-ros ${catkin_LIBRARIES} spdlog::spdlog)
 ## Python library installation
 ## =============================
 
-# Install Python library (e.g., knowrob_ros_lib.py)
-# With this:
-file (COPY 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/knowrob_ros_lib/knowrob_ros_lib.py
-    DESTINATION ${CATKIN_DEVEL_PREFIX}/lib/python3/dist-packages/knowrob_ros/
-)
 
-catkin_install_python(PROGRAMS
-  scripts/test_knowrob_ros_lib.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# list all executable python and shell scripts for installation
+install(PROGRAMS
+   scripts/*
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## =============================
