@@ -49,6 +49,7 @@ add_service_files(
     DIRECTORY srv
     FILES
     AskIncrementalFinish.srv
+    ExportTriples.srv
 )
 generate_messages(DEPENDENCIES
     std_msgs
