@@ -1,0 +1,4 @@
+string path
+---
+# The result of the query
+bool success

@@ -49,6 +49,7 @@ ROSInterface::ROSInterface(const boost::property_tree::ptree &config)
 	tell_action_server_.start();
 	ask_incremental_finish_service_ = nh_.advertiseService("knowrob/askincremental_finish",
 														   &ROSInterface::handleAskIncrementalFinish, this);
+	export_server_ = nh_.advertiseService("knowrob/export", &ROSInterface::executeExportCB, this);
 }
 
 ROSInterface::~ROSInterface() = default;
@@ -313,10 +314,17 @@ void ROSInterface::executeTellCB(const TellGoalConstPtr &goal) {
 	for (const auto &triple: goal->tell.triples) {
 		// Create a vector of Terms for subject and object
 		std::vector<TermPtr> terms;
-		// Add subject
-		terms.push_back(std::make_shared<String>(triple.subject.data()));
-		// Add object
-		terms.push_back(std::make_shared<String>(triple.object.data()));
+		// Add subject (always IRIAtom) (make stringview before)
+		terms.push_back(IRIAtom::Tabled(triple.subject.data()));
+		// Add object (can be IRIAtom, String or Numeric)
+		// If triple.object.data has no surrounding single quotes, add quotes
+		// create a stringview
+		std::string objectString = triple.object.data();
+		if (objectString.front() != '\'' && objectString.back() != '\'') {
+			objectString = "'" + objectString + "'";
+		}
+		TermPtr objectTerm = QueryParser::parseConstant(objectString);
+		terms.push_back(objectTerm);
 		// Add to formulas
 		formulas.push_back(std::make_shared<Predicate>(triple.predicate, terms));
 	}
@@ -337,6 +345,13 @@ void ROSInterface::executeTellCB(const TellGoalConstPtr &goal) {
 	feedback.finished = true;
 	tell_action_server_.publishFeedback(feedback);
 	tell_action_server_.setSucceeded(result);
+}
+
+bool ROSInterface::executeExportCB(ExportTriples::Request &req,
+	ExportTriples::Response &res) {
+		kb_->exportTo(req.path);
+		res.success = true;
+		return true;
 }
 
 int main(int argc, char **argv) {

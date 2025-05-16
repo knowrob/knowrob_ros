@@ -30,6 +30,7 @@
 #include <knowrob_ros/AskIncrementalFinish.h>
 #include <knowrob_ros/TellAction.h>
 #include <knowrob_ros/ModalFrame.h>
+#include <knowrob_ros/ExportTriples.h>
 #include <actionlib/server/simple_action_server.h>
 
 // std
@@ -50,6 +51,7 @@ namespace knowrob {
 
 		// ROS Services
 		ros::ServiceServer ask_incremental_finish_service_;
+		ros::ServiceServer export_server_;
 
 		// KnowledgeBase
 		KnowledgeBasePtr kb_;
@@ -109,6 +111,15 @@ namespace knowrob {
 		 */
 		bool handleAskIncrementalFinish(AskIncrementalFinish::Request &req,
 										AskIncrementalFinish::Response &res);
+
+		/**
+		 * 	Export the knowledge base to a file
+		 * @param req ExportTriples::Request
+		 * @param res ExportTriples::Response
+		 * @return true if the export was successful
+		 */
+		bool executeExportCB(ExportTriples::Request &req,
+							ExportTriples::Response &res);
 
 		/**
 		 * Translate a GraphQueryMessage into a map of key-value pairs
