@@ -41,6 +41,8 @@ ROSInterface::ROSInterface(const boost::property_tree::ptree &config)
 																  this, _1), false),
 		  tell_action_server_(nh_, "knowrob/tell", boost::bind(&ROSInterface::executeTellCB, this, _1), false),
 		  kb_(KnowledgeBase::create(config)) {
+	
+
 	// Start all action servers
 	askall_action_server_.start();
 	askone_action_server_.start();
@@ -358,9 +360,16 @@ int main(int argc, char **argv) {
 	InitKnowRob(argc, argv);
 
 	// Load settings files
+	boost::property_tree::ptree config = InterfaceUtils::loadSettings();
+	// configure logging
+	auto log_config = config.get_child_optional("logging");
+	if (log_config) {
+		Logger::loadConfiguration(log_config.value());
+	}
+
 	try {
 		ros::init(argc, argv, "knowrob_node");
-		ROSInterface ros_interface(InterfaceUtils::loadSettings());
+		ROSInterface ros_interface(config);
 		KB_INFO("[KnowRob] ROS node started.");
 		ros::spin();
 	}
