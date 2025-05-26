@@ -1,4 +1,5 @@
 string path
+string format # 'turtle' or 'rdfxml'
 ---
 # The result of the query
 bool success

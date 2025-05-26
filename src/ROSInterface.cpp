@@ -351,7 +351,17 @@ void ROSInterface::executeTellCB(const TellGoalConstPtr &goal) {
 
 bool ROSInterface::executeExportCB(ExportTriples::Request &req,
 	ExportTriples::Response &res) {
-		kb_->exportTo(req.path);
+		// If req.format is empty or rdfxml
+		if (req.format == "rdfxml") {
+			kb_->exportTo(req.path, semweb::RDF_XML);
+		} else if (req.format == "turtle") {
+			kb_->exportTo(req.path, semweb::TURTLE);
+		} else {
+			// If the format is not supported, return false
+			ROS_ERROR("Export format not supported: %s", req.format.c_str());
+			res.success = false;
+			return false;
+		}
 		res.success = true;
 		return true;
 }
